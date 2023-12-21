@@ -410,7 +410,7 @@ void SetupSD() {
   }
 
   dataLog = SD.open(dataLogFileName, FILE_WRITE);
-  if (!SD.exists(dataLogFileName)) dataLog.println("Data Log de Projeto Integrador 2 - RPM, N.m, W");
+  if (!SD.exists(dataLogFileName)) dataLog.println("Motor Data Log - RPM, N.m, W");
   dataLog.close();
 }
 
