@@ -34,19 +34,19 @@
 //////////////////// CONFIG VARIABLES ////////////////////////////////////////////////////////
 
 //WIFI
-#define EAP_SSID "UTFPR-ALUNO"
-#define EAP_IDENTITY "a2088240"
-#define EAP_USERNAME "a2088240"
-#define EAP_PASSWORD "mszgy28ebnXS58"
-const uint8_t target_esp_mac[6] = { 0x24, 0x0a, 0x44, 0x9a, 0x38, 0x28 };  // MAC
+#define EAP_SSID "MyWifi"
+#define EAP_IDENTITY "user"
+#define EAP_USERNAME "user"
+#define EAP_PASSWORD "password"
+const uint8_t target_esp_mac[6] = { 0x24, 0x0a, 0x44, 0x9a, 0x38, 0x28 };  // MAC - change!
 #define TIMEOUT_RETRIES 10
 
 //MQTT
-#define PUBLISH_TOPIC_POWER "PI2_MotorLog/power"
-#define PUBLISH_TOPIC_RPM "PI2_MotorLog/rpm"
-#define PUBLISH_TOPIC_TORQUE "PI2_MotorLog/torque"
-#define ID_MQTT "PI2_MotorLog_sensor"
-const char* BROKER_MQTT = "test.mosquitto.org";
+#define PUBLISH_TOPIC_POWER "logger_topic/power"
+#define PUBLISH_TOPIC_RPM "logger_topic/rpm"
+#define PUBLISH_TOPIC_TORQUE "logger_topic/torque"
+#define ID_MQTT "logger"
+const char* BROKER_MQTT = "test.mosquitto.org"; //used in test application
 const int BROKER_PORT = 1883;
 
 //LCD
@@ -62,7 +62,6 @@ const float LEVER_LENGTH = 0.080343;
 #define PCNT_SPEED_UNIT PCNT_UNIT_0
 #define PCNT_H_LIM_VAL INT_MAX
 #define PCNT_L_LIM_VAL -10     //some negative values for error margin (should never happen)
-#define PCNT_THRESH0_VAL 1750  //nominal rpm of our application
 #define PCNT_FILTER_VALUE 1000
 #define NUMBER_OF_STRIPS 4
 
@@ -74,7 +73,7 @@ const long timezone = -3;
 byte daysavetime = 0;
 
 //SD
-const char* dataLogFileName = "DadosPI2.txt";
+const char* dataLogFileName = "loggerdata.txt";
 
 ////////////////// TASK DELAYS ////////////////////////////////////////////////////////////////////////////////////
 
@@ -392,8 +391,8 @@ void ReadLoadCell(void* parameter) {
 /////////////// TIME //////////////////////////////////////////////
 
 void SetupTime() {
-
-  configTime(3600 * timezone, 3600 * daysavetime, ntpServer1, ntpServer2, ntpServer3);
+  const int secondsOnADay = 3600;
+  configTime(secondsOnADay * timezone, secondsOnADay * daysavetime, ntpServer1, ntpServer2, ntpServer3);
   getLocalTime(&timeinfo);
   Serial.print("Time connected: ");
   Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
